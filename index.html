@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SereneMind - Your Mental Wellness Sanctuary</title>
+  <meta name="description" content="A mental wellness companion featuring an empathetic chatbot, interactive relaxing games, and mood tracking.">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+            <path d="M12 6v12M6 12h12"/>
+            <circle cx="12" cy="12" r="4" fill="currentColor" fill-opacity="0.2"/>
+          </svg>
+          <span class="logo-text">SereneMind</span>
+        </div>
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Sidebar">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="dashboard-tab" id="nav-dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="9" rx="1" />
+            <rect x="14" y="3" width="7" height="5" rx="1" />
+            <rect x="14" y="12" width="7" height="9" rx="1" />
+            <rect x="3" y="16" width="7" height="5" rx="1" />
+          </svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-tab="chat-tab" id="nav-chat">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>Empathetic Chat</span>
+        </button>
+        <button class="nav-item" data-tab="games-tab" id="nav-games">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <path d="M12 9v4M12 17h.01"/>
+          </svg>
+          <span>Zen Zone Games</span>
+        </button>
+        <button class="nav-item" data-tab="profile-tab" id="nav-profile">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>My Profile</span>
+        </button>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user-peek">
+          <div class="user-peek-avatar" id="peek-avatar">😊</div>
+          <div class="user-peek-info">
+            <span class="user-peek-name" id="peek-name">Guest</span>
+            <span class="user-peek-status">Mindful Tracker</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <h1 id="page-title">Welcome Back</h1>
+          <p id="page-subtitle" class="subtitle">Take a deep breath. You are in a safe space.</p>
+        </div>
+        <div class="header-right">
+          <div class="quick-stats">
+            <div class="stat-badge">
+              <span class="stat-icon">🔥</span>
+              <span class="stat-text"><strong id="streak-count">0</strong> Day Streak</span>
+            </div>
+            <div class="stat-badge">
+              <span class="stat-icon">⭐</span>
+              <span class="stat-text"><strong id="points-count">0</strong> Zen Points</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Views (Tabs) -->
+      <div class="content-body">
+        
+        <!-- DASHBOARD TAB -->
+        <section id="dashboard-tab" class="tab-content active">
+          <div class="dashboard-grid">
+            
+            <!-- Quick Log Panel -->
+            <div class="card glass quick-log-card">
+              <h2 class="card-title">How are you feeling right now?</h2>
+              <div class="mood-selector-container">
+                <button class="mood-btn" data-mood="Happy" title="Happy">
+                  <span class="mood-emoji">😊</span>
+                  <span class="mood-label">Happy</span>
+                </button>
+                <button class="mood-btn" data-mood="Calm" title="Calm">
+                  <span class="mood-emoji">🧘</span>
+                  <span class="mood-label">Calm</span>
+                </button>
+                <button class="mood-btn" data-mood="Anxious" title="Anxious">
+                  <span class="mood-emoji">🥺</span>
+                  <span class="mood-label">Anxious</span>
+                </button>
+                <button class="mood-btn" data-mood="Stressed" title="Stressed">
+                  <span class="mood-emoji">🤯</span>
+                  <span class="mood-label">Stressed</span>
+                </button>
+                <button class="mood-btn" data-mood="Sad" title="Sad">
+                  <span class="mood-emoji">😢</span>
+                  <span class="mood-label">Sad</span>
+                </button>
+              </div>
+              <div class="quick-inputs">
+                <div class="input-group">
+                  <label for="sleep-hours">Sleep (Hours)</label>
+                  <input type="number" id="sleep-hours" min="0" max="24" step="0.5" placeholder="8">
+                </div>
+                <div class="input-group">
+                  <label for="mindful-mins">Mindful Mins</label>
+                  <input type="number" id="mindful-mins" min="0" max="180" step="5" placeholder="15">
+                </div>
+                <button class="btn btn-primary" id="log-submit-btn">Save Log</button>
+              </div>
+            </div>
+
+            <!-- Daily Wellness Checklist -->
+            <div class="card glass checklist-card">
+              <h2 class="card-title">Daily Wellness Routine</h2>
+              <ul class="checklist" id="daily-checklist">
+                <li>
+                  <label class="checkbox-container">
+                    <input type="checkbox" id="check-mood">
+                    <span class="checkmark"></span>
+                    Log your daily mood
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-container">
+                    <input type="checkbox" id="check-chat">
+                    <span class="checkmark"></span>
+                    Chat with Serene (2+ messages)
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-container">
+                    <input type="checkbox" id="check-game">
+                    <span class="checkmark"></span>
+                    Relax in the Zen Zone for 3 mins
+                  </label>
+                </li>
+                <li>
+                  <label class="checkbox-container">
+                    <input type="checkbox" id="check-journal">
+                    <span class="checkmark"></span>
+                    Write a short reflection
+                  </label>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Quote Card -->
+            <div class="card glass quote-card">
+              <div class="quote-content">
+                <p id="daily-quote">"Yesterday is history, tomorrow is a mystery, but today is a gift. That is why it is called the present."</p>
+                <cite id="daily-quote-author">- Master Oogway</cite>
+              </div>
+              <button class="btn btn-icon" id="new-quote-btn" title="New Quote">✨ Next Quote</button>
+            </div>
+
+            <!-- Mood History Chart -->
+            <div class="card glass chart-card full-width">
+              <div class="chart-header">
+                <h2 class="card-title">Weekly Wellness Tracking</h2>
+                <div class="chart-legend">
+                  <span class="legend-dot mood-dot"></span> Mood
+                  <span class="legend-dot mindful-dot"></span> Mindfulness
+                </div>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="moodChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Reflection Journal -->
+            <div class="card glass journal-card">
+              <h2 class="card-title">Reflective Journal</h2>
+              <p class="journal-subtext">Write down your thoughts, fears, or things you are grateful for today.</p>
+              <textarea id="journal-input" placeholder="Start typing your reflection..."></textarea>
+              <div class="journal-actions">
+                <button class="btn btn-secondary" id="journal-save-btn">Save Entry</button>
+              </div>
+            </div>
+
+            <!-- History Logs -->
+            <div class="card glass logs-card">
+              <h2 class="card-title">Recent Activity Logs</h2>
+              <div class="logs-container" id="recent-logs">
+                <div class="no-logs">No activity logged yet. Take a moment to log your first record!</div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- EMPATHETIC CHAT TAB -->
+        <section id="chat-tab" class="tab-content">
+          <div class="chat-container card glass">
+            <div class="chat-header-bar">
+              <div class="chat-bot-identity">
+                <div class="avatar-status">
+                  <span class="chat-avatar">🌱</span>
+                  <span class="status-indicator online"></span>
+                </div>
+                <div>
+                  <h3 class="chat-bot-name">Serene</h3>
+                  <span class="chat-bot-role">Compassionate Guide</span>
+                </div>
+              </div>
+              <button class="btn btn-clear-chat" id="clear-chat-btn" title="Restart Chat">Restart Conversation</button>
+            </div>
+            
+            <div class="chat-messages" id="chat-messages-container">
+              <!-- Default Welcome Message -->
+              <div class="chat-message bot">
+                <div class="message-content">
+                  Hello! I'm <strong>Serene</strong>, your mental wellness companion. 💜 
+                  <br><br>
+                  I'm here to listen, offer support, and help you navigate stress, anxiety, or heavy thoughts in a safe, judgment-free space. 
+                  How are you holding up today? You can choose one of the options below or tell me anything on your mind.
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-suggestions" id="chat-suggestions-container">
+              <button class="suggestion-chip">I'm feeling very stressed right now</button>
+              <button class="suggestion-chip">Help me stop a panic attack</button>
+              <button class="suggestion-chip">Guide me in a breathing exercise</button>
+              <button class="suggestion-chip">I'm struggling with lonely/sad feelings</button>
+            </div>
+
+            <div class="chat-input-area">
+              <input type="text" id="chat-input" placeholder="Type what you feel..." autocomplete="off">
+              <button class="btn-send" id="chat-send-btn" aria-label="Send Message">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- GAMES TAB (ZEN ZONE) -->
+        <section id="games-tab" class="tab-content">
+          <div class="games-header">
+            <div class="games-nav" id="games-nav">
+              <button class="games-tab-btn active" data-game="breath-game">🧘 Breathing Bubble</button>
+              <button class="games-tab-btn" data-game="sound-game">🎵 Ambient Mixer</button>
+              <button class="games-tab-btn" data-game="canvas-game">✨ Zen Sound Ripples</button>
+            </div>
+          </div>
+
+          <div class="games-content-container">
+            <!-- Game 1: Breathing Bubble -->
+            <div class="game-view active" id="game-breath-game">
+              <div class="game-card card glass text-center">
+                <h2>Breathing Sanctuary</h2>
+                <p>Harmonize your nervous system. Choose a pattern and follow the bubble's rhythm.</p>
+                
+                <div class="breathing-settings">
+                  <label for="breath-pattern">Breathing Pattern:</label>
+                  <select id="breath-pattern" class="select-input">
+                    <option value="box">Box Breathing (4s In - 4s Hold - 4s Out - 4s Hold)</option>
+                    <option value="relax">4-7-8 Relax (4s In - 7s Hold - 8s Out)</option>
+                    <option value="equal">Equal Breathing (5s In - 5s Out)</option>
+                  </select>
+                </div>
+
+                <div class="breathing-circle-container">
+                  <div class="breath-outer-circle">
+                    <div class="breath-inner-bubble" id="breath-bubble"></div>
+                  </div>
+                  <div class="breathing-instructions" id="breath-instruction">Click Start to Begin</div>
+                  <div class="breathing-timer" id="breath-timer">00:00</div>
+                </div>
+
+                <div class="breathing-controls">
+                  <button class="btn btn-primary" id="breath-start-btn">Start Session</button>
+                  <button class="btn btn-secondary hidden" id="breath-stop-btn">Stop</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Game 2: Ambient Sound Mixer -->
+            <div class="game-view" id="game-sound-game">
+              <div class="game-card card glass">
+                <div class="text-center">
+                  <h2>Ambient Soundscape Mixer</h2>
+                  <p>Design your own calming background noise. Synthesized directly in your browser.</p>
+                  <button class="btn btn-primary" id="audio-enable-btn">Toggle Audio System: OFF</button>
+                </div>
+                
+                <div class="mixer-sliders">
+                  <!-- Rain -->
+                  <div class="slider-row">
+                    <div class="slider-info">
+                      <span class="slider-emoji">🌧️</span>
+                      <span class="slider-label">Gentle Rain</span>
+                    </div>
+                    <input type="range" id="volume-rain" min="0" max="1" step="0.05" value="0">
+                    <span class="slider-val" id="val-rain">0%</span>
+                  </div>
+
+                  <!-- Ocean -->
+                  <div class="slider-row">
+                    <div class="slider-info">
+                      <span class="slider-emoji">🌊</span>
+                      <span class="slider-label">Ocean Waves</span>
+                    </div>
+                    <input type="range" id="volume-ocean" min="0" max="1" step="0.05" value="0">
+                    <span class="slider-val" id="val-ocean">0%</span>
+                  </div>
+
+                  <!-- Wind -->
+                  <div class="slider-row">
+                    <div class="slider-info">
+                      <span class="slider-emoji">🍃</span>
+                      <span class="slider-label">Soft Forest Wind</span>
+                    </div>
+                    <input type="range" id="volume-wind" min="0" max="1" step="0.05" value="0">
+                    <span class="slider-val" id="val-wind">0%</span>
+                  </div>
+
+                  <!-- Binaural Drone -->
+                  <div class="slider-row">
+                    <div class="slider-info">
+                      <span class="slider-emoji">🧘</span>
+                      <span class="slider-label">Binaural Delta Drone (100Hz + 104Hz)</span>
+                    </div>
+                    <input type="range" id="volume-drone" min="0" max="1" step="0.05" value="0">
+                    <span class="slider-val" id="val-drone">0%</span>
+                  </div>
+                </div>
+                <div class="audio-notice text-center">
+                  <small>Uses Web Audio API. Enable the audio system first, then drag the sliders to mix sound frequencies.</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Game 3: Zen Sound Ripples -->
+            <div class="game-view" id="game-canvas-game">
+              <div class="game-card card glass text-center">
+                <h2>Zen Sound Ripples</h2>
+                <p>Click or tap anywhere on the canvas below. Each interaction creates a ripple and generates a calming musical note in the pentatonic scale.</p>
+                <div class="canvas-instructions" id="canvas-enable-prompt">Click to activate Sound System and Canvas</div>
+                <div class="canvas-container">
+                  <canvas id="zen-canvas" width="600" height="400"></canvas>
+                </div>
+                <div class="canvas-controls">
+                  <button class="btn btn-secondary" id="clear-canvas-btn">Clear Canvas</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROFILE TAB -->
+        <section id="profile-tab" class="tab-content">
+          <div class="profile-grid">
+            
+            <!-- User Settings -->
+            <div class="card glass profile-setup-card">
+              <h2 class="card-title">Personal Wellness Settings</h2>
+              
+              <div class="form-group">
+                <label for="profile-name-input">Your Name</label>
+                <input type="text" id="profile-name-input" placeholder="Enter your name..." value="Guest">
+              </div>
+
+              <div class="form-group">
+                <label>Select Avatar Emoji</label>
+                <div class="avatar-grid" id="avatar-grid">
+                  <button class="avatar-select-btn active">😊</button>
+                  <button class="avatar-select-btn">🧘</button>
+                  <button class="avatar-select-btn">🌱</button>
+                  <button class="avatar-select-btn">🌻</button>
+                  <button class="avatar-select-btn">🦊</button>
+                  <button class="avatar-select-btn">🌈</button>
+                  <button class="avatar-select-btn">🌊</button>
+                  <button class="avatar-select-btn">⭐</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="wellness-focus">My Primary Focus</label>
+                <select id="wellness-focus" class="select-input">
+                  <option value="stress">Stress Reduction</option>
+                  <option value="depression">Depression & Mood Management</option>
+                  <option value="anxiety">Anxiety & Calmness</option>
+                  <option value="sleep">Improving Sleep Quality</option>
+                  <option value="mindfulness">Daily Mindfulness practice</option>
+                </select>
+              </div>
+
+              <button class="btn btn-primary" id="save-profile-btn">Update Profile</button>
+            </div>
+
+            <!-- Self Assessment -->
+            <div class="card glass self-assessment-card">
+              <h2 class="card-title">Stress Self-Assessment</h2>
+              <p class="assessment-subtext">How have you felt over the past week? Check the symptoms you've experienced:</p>
+              
+              <div class="assessment-questions">
+                <label class="checkbox-container">
+                  <input type="checkbox" class="assessment-checkbox" value="sleep">
+                  <span class="checkmark"></span>
+                  Difficulty falling asleep or staying asleep
+                </label>
+                <label class="checkbox-container">
+                  <input type="checkbox" class="assessment-checkbox" value="racing">
+                  <span class="checkmark"></span>
+                  Racing thoughts or constantly worrying
+                </label>
+                <label class="checkbox-container">
+                  <input type="checkbox" class="assessment-checkbox" value="energy">
+                  <span class="checkmark"></span>
+                  Low energy, fatigue, or lack of motivation
+                </label>
+                <label class="checkbox-container">
+                  <input type="checkbox" class="assessment-checkbox" value="focus">
+                  <span class="checkmark"></span>
+                  Hard to concentrate on daily tasks
+                </label>
+                <label class="checkbox-container">
+                  <input type="checkbox" class="assessment-checkbox" value="physical">
+                  <span class="checkmark"></span>
+                  Muscle tension, headaches, or rapid heartbeat
+                </label>
+                <label class="checkbox-container">
+                  <input type="checkbox" class="assessment-checkbox" value="mood">
+                  <span class="checkmark"></span>
+                  Irritability or sudden mood swings
+                </label>
+              </div>
+
+              <div class="assessment-result" id="assessment-result">
+                Select options above to see your stress indicator level.
+              </div>
+            </div>
+
+            <!-- Danger Zone / Data Management -->
+            <div class="card glass danger-zone-card full-width">
+              <h2 class="card-title text-danger">Local Data & Privacy Control</h2>
+              <p>Your records never leave this computer. They are stored in your browser's private local storage. You can manage your stored data here.</p>
+              <div class="danger-actions">
+                <button class="btn btn-secondary" id="export-data-btn">Export Data (JSON)</button>
+                <button class="btn btn-danger" id="clear-data-btn">Clear All Records & Reset App</button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Loading & Script dependencies -->
+  <script src="app.js"></script>
+  <script src="chat.js"></script>
+  <script src="games.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
